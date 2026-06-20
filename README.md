@@ -71,8 +71,3 @@ Frontend runs on `http://localhost:5173`.
 - Search for users
 - Deploy backend (Render/Railway) and frontend (Vercel/Netlify)
 
-## Submission Notes (CodeAlpha)
-1. Push this to a GitHub repo named `CodeAlpha_SocialMediaPlatform`.
-2. Record a short demo video walking through register → post → like → comment → follow → feed.
-3. Post on LinkedIn tagging @CodeAlpha with the repo link.
-4. Submit via the CodeAlpha submission form.
