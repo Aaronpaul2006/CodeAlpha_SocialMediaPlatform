@@ -62,22 +62,33 @@ export default function Feed() {
       </div>
 
       {posts.length === 0 && (
-        <p>No posts yet. Follow people or create your first post!</p>
+        <div className="card" style={{ textAlign: 'center', padding: '32px' }}>
+          <p style={{ margin: 0, fontWeight: 500 }}>No posts yet. Follow people or create your first post!</p>
+        </div>
       )}
 
       {posts.map((post) => (
         <div className="card" key={post._id}>
-          <strong>
-            <Link to={`/profile/${post.author._id}`}>{post.author.name}</Link>
-          </strong>
-          <p>{post.text}</p>
-          {post.image && <img src={post.image} alt="post" style={{ maxWidth: '100%', borderRadius: 6 }} />}
-          <div>
+          <div className="post-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12, borderBottom: '1px dashed rgba(30, 27, 75, 0.15)', paddingBottom: 8 }}>
+            <strong>
+              <Link to={`/profile/${post.author._id}`} style={{ textDecoration: 'none', color: 'var(--accent-purple)', fontSize: '1.25rem', fontFamily: 'var(--heading-font)' }}>
+                ★ {post.author.name} ★
+              </Link>
+            </strong>
+            <span className="badge badge-purple" style={{ fontSize: '0.8rem' }}>POST</span>
+          </div>
+          <p style={{ fontSize: '1.05rem', lineHeight: '1.5', margin: '8px 0 16px 0' }}>{post.text}</p>
+          {post.image && (
+            <div style={{ margin: '12px 0', border: '1px solid var(--glass-border)', borderRadius: 12, overflow: 'hidden', boxShadow: '0 4px 15px rgba(0,0,0,0.08)' }}>
+              <img src={post.image} alt="post" style={{ width: '100%', display: 'block', maxHeight: '420px', objectFit: 'cover' }} />
+            </div>
+          )}
+          <div style={{ display: 'flex', gap: '10px', marginTop: '14px' }}>
             <button className="secondary" onClick={() => handleLike(post._id)}>
               ❤ {post.likes.length}
-            </button>{' '}
-            <Link to={`/post/${post._id}`}>
-              <button className="secondary">Comments</button>
+            </button>
+            <Link to={`/post/${post._id}`} style={{ textDecoration: 'none', marginRight: 0 }}>
+              <button className="secondary">💬 Comments</button>
             </Link>
           </div>
         </div>

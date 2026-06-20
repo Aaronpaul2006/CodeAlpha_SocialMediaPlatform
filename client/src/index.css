@@ -1,82 +1,309 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=VT323&display=swap');
+
+:root {
+  --heading-font: 'VT323', monospace;
+  --body-font: 'Outfit', sans-serif;
+  
+  /* Glass colors - soft translucent panels */
+  --glass-bg: rgba(255, 255, 255, 0.45);
+  --glass-border: rgba(255, 255, 255, 0.35);
+  --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+  
+  /* Text and details */
+  --text-primary: #1e1b4b;      /* Dark indigo for strong contrast */
+  --text-secondary: #4338ca;    /* Medium indigo */
+  --accent-pink: #f43f5e;       /* Retro hot pink */
+  --accent-purple: #8b5cf6;     /* Retro purple */
+  --accent-cyan: #06b6d4;       /* Retro cyan */
+  --accent-yellow: #eab308;     /* Retro yellow */
+  
+  --retro-border: 3px double #1e1b4b;
+  --retro-border-soft: 2px solid #1e1b4b;
+  --card-radius: 16px;
+  
+  /* Card header gradients */
+  --header-gradient: linear-gradient(90deg, #f43f5e 0%, #8b5cf6 50%, #06b6d4 100%);
+}
+
 * {
   box-sizing: border-box;
 }
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background: #f5f6f8;
-  color: #1a1a1a;
+  font-family: var(--body-font);
+  color: var(--text-primary);
+  min-height: 100vh;
+  
+  /* Dynamic retro liquid gradient background */
+  background: linear-gradient(-45deg, #fecdd3, #ddd6fe, #cffafe, #fef08a);
+  background-size: 400% 400%;
+  animation: liquidGradient 15s ease infinite;
+  background-attachment: fixed;
+}
+
+@keyframes liquidGradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 .container {
-  max-width: 640px;
+  max-width: 680px;
   margin: 0 auto;
-  padding: 16px;
+  padding: 24px 16px 80px 16px;
 }
 
+/* Glassmorphism Navigation Bar */
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #fff;
-  padding: 12px 24px;
-  border-bottom: 1px solid #e3e3e3;
+  background: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 2px solid var(--glass-border);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+  padding: 16px 24px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.navbar-brand {
+  font-family: var(--heading-font);
+  font-size: 2.2rem;
+  font-weight: bold;
+  text-decoration: none;
+  background: linear-gradient(45deg, var(--accent-pink), var(--accent-purple), var(--accent-cyan));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 2px 2px 0px rgba(255, 255, 255, 0.5);
+  transition: all 0.3s ease;
+}
+
+.navbar-brand:hover {
+  filter: brightness(1.2);
+  transform: skewX(-5deg);
 }
 
 .navbar a {
-  margin-right: 16px;
+  margin-right: 18px;
   text-decoration: none;
-  color: #333;
-  font-weight: 500;
+  color: var(--text-primary);
+  font-family: var(--heading-font);
+  font-size: 1.4rem;
+  font-weight: bold;
+  padding: 4px 10px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
 }
 
+.navbar a:hover {
+  background: rgba(255, 255, 255, 0.3);
+  color: var(--accent-pink);
+  box-shadow: 0 0 8px rgba(244, 63, 94, 0.2);
+}
+
+/* Retro Glass Cards */
 .card {
-  background: #fff;
-  border: 1px solid #e3e3e3;
-  border-radius: 8px;
-  padding: 16px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--card-radius);
+  box-shadow: var(--glass-shadow);
+  padding: 24px;
+  margin-bottom: 28px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.25), 0 0 15px rgba(244, 63, 94, 0.2);
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+/* Colorful Retro Top Ribbon on Cards */
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: var(--header-gradient);
+}
+
+/* Headings with Nostalgic Fonts */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--heading-font);
+  color: var(--text-primary);
+  letter-spacing: 1px;
+  margin-top: 0;
+  text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.8);
+}
+
+h2 {
+  font-size: 2.2rem;
+  border-bottom: 2px dashed rgba(30, 27, 75, 0.2);
+  padding-bottom: 8px;
   margin-bottom: 16px;
 }
 
-input, textarea, button {
-  font-family: inherit;
-  font-size: 14px;
+h3 {
+  font-size: 1.8rem;
+  margin-bottom: 12px;
 }
 
-input, textarea {
-  width: 100%;
-  padding: 8px;
+h4 {
+  font-size: 1.5rem;
   margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
 }
 
+/* Retro-futuristic Clicky Buttons */
 button {
-  padding: 8px 14px;
-  border: none;
-  border-radius: 6px;
-  background: #2563eb;
+  font-family: var(--heading-font);
+  font-size: 1.3rem;
+  padding: 8px 18px;
+  border: var(--retro-border-soft);
+  border-radius: 8px;
+  background: var(--accent-pink);
   color: #fff;
   cursor: pointer;
+  box-shadow: 3px 3px 0px var(--text-primary);
+  text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.3);
+  transition: all 0.1s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 
 button:hover {
-  background: #1d4ed8;
+  background: #f43f5e;
+  transform: translate(1px, 1px);
+  box-shadow: 2px 2px 0px var(--text-primary);
+}
+
+button:active {
+  transform: translate(3px, 3px);
+  box-shadow: 0px 0px 0px var(--text-primary);
 }
 
 button.secondary {
-  background: #e5e7eb;
-  color: #1a1a1a;
+  background: rgba(255, 255, 255, 0.2);
+  color: var(--text-primary);
+  border: var(--retro-border-soft);
+  box-shadow: 3px 3px 0px var(--text-primary);
+  text-shadow: none;
 }
 
+button.secondary:hover {
+  background: rgba(255, 255, 255, 0.35);
+  box-shadow: 2px 2px 0px var(--text-primary);
+}
+
+button.secondary:active {
+  box-shadow: 0px 0px 0px var(--text-primary);
+}
+
+/* Glass Inputs & Textareas */
+input, textarea {
+  width: 100%;
+  font-family: var(--body-font);
+  font-size: 15px;
+  background: rgba(255, 255, 255, 0.25);
+  border: 2px solid var(--glass-border);
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin-bottom: 16px;
+  color: var(--text-primary);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  transition: all 0.3s ease;
+}
+
+input::placeholder, textarea::placeholder {
+  color: rgba(30, 27, 75, 0.5);
+}
+
+input:focus, textarea:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.4);
+  border-color: var(--accent-purple);
+  box-shadow: 0 0 10px rgba(139, 92, 246, 0.25);
+}
+
+/* Marquee statistics band */
+.ticker-wrap {
+  width: 100%;
+  background: rgba(30, 27, 75, 0.08);
+  border-radius: 8px;
+  padding: 6px;
+  overflow: hidden;
+  margin-bottom: 20px;
+  border: 1px dashed rgba(30, 27, 75, 0.2);
+}
+
+.ticker {
+  display: inline-block;
+  white-space: nowrap;
+  padding-left: 100%;
+  animation: ticker 25s linear infinite;
+  font-family: var(--heading-font);
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+}
+
+@keyframes ticker {
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-100%, 0, 0); }
+}
+
+/* Error styles */
 .error {
-  color: #dc2626;
-  font-size: 13px;
-  margin-bottom: 10px;
+  background: rgba(244, 63, 94, 0.15);
+  border-left: 4px solid var(--accent-pink);
+  color: #be123c;
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 16px;
 }
 
+/* Comment blocks */
 .comment {
-  border-top: 1px solid #eee;
-  padding: 8px 0;
+  border-top: 1px dashed rgba(30, 27, 75, 0.15);
+  padding: 12px 4px;
+  font-size: 14px;
+  transition: background 0.2s ease;
+}
+
+.comment:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Custom retro tags / badges */
+.badge {
+  display: inline-block;
+  padding: 4px 10px;
+  font-family: var(--heading-font);
+  font-size: 1.1rem;
+  font-weight: bold;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.1);
+}
+
+.badge-cyan { background: rgba(6, 182, 212, 0.2); color: #0891b2; }
+.badge-purple { background: rgba(139, 92, 246, 0.2); color: #7c3aed; }
+.badge-pink { background: rgba(244, 63, 94, 0.2); color: #db2777; }
+
+/* Center authorization forms */
+.auth-container {
+  max-width: 420px;
+  margin: 60px auto;
 }

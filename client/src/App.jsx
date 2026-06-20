@@ -26,6 +26,7 @@ function Navbar() {
   return (
     <div className="navbar">
       <div>
+        <Link to="/" className="navbar-brand">★ NET_SOCIAL ★</Link>
         <Link to="/">Feed</Link>
         {user && <Link to={`/profile/${user.id}`}>My Profile</Link>}
       </div>
@@ -43,11 +44,22 @@ function Navbar() {
   );
 }
 
+function Ticker() {
+  return (
+    <div className="ticker-wrap">
+      <div className="ticker">
+        ⚡ Welcome to NET_SOCIAL! • Connect, share, and vibe in retro glass style • ⚡ Update your bio • ⚡ Follow friends to see their updates here! • ⚡
+      </div>
+    </div>
+  );
+}
+
 export default function App() {
   return (
     <>
       <Navbar />
       <div className="container">
+        <Ticker />
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
