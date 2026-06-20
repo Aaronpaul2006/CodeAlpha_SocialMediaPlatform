@@ -94,8 +94,21 @@ export default function Profile() {
               <img src={post.image} alt="post" style={{ width: '100%', display: 'block', maxHeight: '420px', objectFit: 'cover' }} />
             </div>
           )}
-          <div style={{ display: 'flex', gap: '10px', marginTop: '14px' }}>
-            <span className="badge badge-pink" style={{ fontSize: '0.95rem' }}>❤ {post.likes.length} Likes</span>
+          <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: '14px' }}>
+            {post.reactions && post.reactions.length > 0 ? (
+              Object.entries(
+                post.reactions.reduce((acc, r) => {
+                  acc[r.type] = (acc[r.type] || 0) + 1;
+                  return acc;
+                }, {})
+              ).map(([type, count]) => (
+                <span key={type} className="badge badge-pink" style={{ fontSize: '0.85rem' }}>
+                  {type} {count}
+                </span>
+              ))
+            ) : (
+              <span style={{ fontSize: '0.9rem', color: 'rgba(30, 27, 75, 0.4)' }}>No reactions yet</span>
+            )}
           </div>
         </div>
       ))}

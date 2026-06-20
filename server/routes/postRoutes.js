@@ -5,14 +5,14 @@ const {
   createPost,
   getFeed,
   getPost,
-  toggleLike,
+  reactToPost,
   deletePost,
 } = require('../controllers/postController');
 
 router.post('/', auth, createPost);
 router.get('/feed', auth, getFeed);
 router.get('/:id', getPost);
-router.put('/:id/like', auth, toggleLike);
+router.put('/:id/react', auth, reactToPost);
 router.delete('/:id', auth, deletePost);
 
 module.exports = router;

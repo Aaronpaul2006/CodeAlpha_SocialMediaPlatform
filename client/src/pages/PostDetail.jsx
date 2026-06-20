@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import api from '../api.js';
+import { useAuth } from '../context/AuthContext.jsx';
+import { ReactionPicker, ReactionsSummary } from '../components/ReactionPicker.jsx';
 
 export default function PostDetail() {
+  const { user: currentUser } = useAuth();
   const { id } = useParams();
   const [post, setPost] = useState(null);
   const [comments, setComments] = useState([]);
@@ -23,8 +26,8 @@ export default function PostDetail() {
     loadPost();
   }, [id]);
 
-  const handleLike = async () => {
-    await api.put(`/posts/${id}/like`);
+  const handleReaction = async (postId, reactionType) => {
+    await api.put(`/posts/${id}/react`, { type: reactionType });
     loadPost();
   };
 
@@ -41,6 +44,12 @@ export default function PostDetail() {
   };
 
   if (!post) return <p>{error || 'Loading...'}</p>;
+
+  const userReactionObj = post.reactions?.find(r => {
+    const rUserId = typeof r.user === 'object' ? r.user._id : r.user;
+    return rUserId === currentUser?.id;
+  });
+  const userReaction = userReactionObj ? userReactionObj.type : null;
 
   return (
     <div>
@@ -59,8 +68,19 @@ export default function PostDetail() {
             <img src={post.image} alt="post" style={{ width: '100%', display: 'block', maxHeight: '420px', objectFit: 'cover' }} />
           </div>
         )}
+        
+        <ReactionsSummary 
+          post={post} 
+          currentUser={currentUser} 
+          onReactionClick={handleReaction} 
+        />
+
         <div style={{ marginTop: '14px' }}>
-          <button className="secondary" onClick={handleLike}>❤ {post.likes.length}</button>
+          <ReactionPicker 
+            postId={post._id} 
+            onReact={handleReaction} 
+            userReaction={userReaction} 
+          />
         </div>
       </div>
 

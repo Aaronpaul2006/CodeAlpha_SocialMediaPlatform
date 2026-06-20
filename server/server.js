@@ -43,8 +43,39 @@ async function startServer() {
 
   mongoose
     .connect(mongoUri)
-    .then(() => {
+    .then(async () => {
       console.log('MongoDB connected');
+      
+      try {
+        const Post = require('./models/Post');
+        const postsWithLikes = await Post.find({ likes: { $exists: true } });
+        if (postsWithLikes.length > 0) {
+          console.log(`Found ${postsWithLikes.length} legacy posts to migrate from likes to reactions...`);
+          for (const post of postsWithLikes) {
+            const reactions = [];
+            const oldLikes = post.get('likes');
+            if (oldLikes && Array.isArray(oldLikes)) {
+              oldLikes.forEach(userId => {
+                reactions.push({
+                  user: userId,
+                  type: '❤️'
+                });
+              });
+            }
+            await Post.updateOne(
+              { _id: post._id },
+              { 
+                $set: { reactions }, 
+                $unset: { likes: "" } 
+              }
+            );
+          }
+          console.log('Data migration successfully completed.');
+        }
+      } catch (migrationErr) {
+        console.error('Data migration failed:', migrationErr.message);
+      }
+
       app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
     })
     .catch((err) => {

@@ -47,21 +47,37 @@ exports.getPost = async (req, res) => {
   }
 };
 
-exports.toggleLike = async (req, res) => {
+exports.reactToPost = async (req, res) => {
   try {
+    const { type } = req.body;
+    const allowedReactions = ['❤️', '😂', '😮', '😢', '🔥', '👍'];
+
+    if (!type || !allowedReactions.includes(type)) {
+      return res.status(400).json({ message: 'Invalid or missing reaction type' });
+    }
+
     const post = await Post.findById(req.params.id);
     if (!post) return res.status(404).json({ message: 'Post not found' });
 
-    const liked = post.likes.includes(req.userId);
+    if (!post.reactions) post.reactions = [];
 
-    if (liked) {
-      post.likes.pull(req.userId);
+    const existingIndex = post.reactions.findIndex(
+      (r) => r.user.toString() === req.userId
+    );
+
+    if (existingIndex > -1) {
+      const existingReaction = post.reactions[existingIndex];
+      if (existingReaction.type === type) {
+        post.reactions.splice(existingIndex, 1);
+      } else {
+        post.reactions[existingIndex].type = type;
+      }
     } else {
-      post.likes.push(req.userId);
+      post.reactions.push({ user: req.userId, type });
     }
 
     await post.save();
-    res.json({ likesCount: post.likes.length, liked: !liked });
+    res.json(post.reactions);
   } catch (err) {
     res.status(500).json({ message: 'Server error', error: err.message });
   }
